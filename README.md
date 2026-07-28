@@ -5,7 +5,7 @@ A price scraper based on FastAPI with discount warning on email
 ## Features
 - Get the current price of the Vans Knu Skool
 - Compare the price with its base-price
-- Receive on your email when the show its on sale
+- Receive on your email when the shoe is on sale
 
 ## Architecture
 n8n Schedule Trigger → HTTP Request (FastAPI /preco) → IF price dropped → Gmail notification
@@ -35,6 +35,8 @@ Note on Gmail OAuth: The workflow uses a custom Google Cloud credentials app for
 ## How to run
 
 Run the script:
+
 pip install -r requirements.txt
+
 uvicorn main:app
 
