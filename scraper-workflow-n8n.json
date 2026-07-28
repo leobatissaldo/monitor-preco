@@ -1,0 +1,146 @@
+{
+  "name": "Scraper Integration - Email",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a97de1a7-bbe8-4d9a-932d-1cceea72fc31",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:8000/price",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "51e9e453-8cac-453f-aac9-83fdb539e202",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "814004c7-efb2-4790-98a5-f0f1fa971852",
+              "leftValue": "={{ $json.on_sale }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "1b68fa43-f543-4d84-9e78-99d79a89df64",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "leobatissaldo@gmail.com",
+        "subject": "Vans Knu Skool is on sale!",
+        "emailType": "text",
+        "message": "The sneaker is on sale! current price: {{ $('HTTP Request').item.json.current_price }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        -112
+      ],
+      "id": "a5aa1719-872e-4866-b72c-f576e6dfbc2f",
+      "name": "Send a message",
+      "webhookId": "9a86175e-7f2d-4d4f-a47e-19b05b76a9aa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zDbjBUC3sO2XdktP",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "70546218-ac1b-4e0a-aed0-bf85ef9cca48",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4f5cbe3c856dbd8be7d2dd671c8132f9963126e81c3a7950919f75735fbd820b"
+  },
+  "nodeGroups": [],
+  "id": "uWFxhhbkOaAuGMCy",
+  "tags": []
+}
